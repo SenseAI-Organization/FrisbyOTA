@@ -62,13 +62,13 @@ int firmwareVersionCheck()
     fwurl += URL_FW_VER;
     fwurl += "?";
     fwurl += String(rand());
-    Serial.println("Checking URL: " + fwurl);  // Añadir para debug
+    Serial.println("Checking URL: " + fwurl);
     
     WiFiClientSecure *wificlient = new WiFiClientSecure;
 
     if (wificlient)
     {
-        wificlient->setCACert(rootCACertificate);
+        wificlient->setInsecure();  // Prueba con esto en lugar de setCACert
         HTTPClient https;
 
         if (https.begin(*wificlient, fwurl))
@@ -77,11 +77,15 @@ int firmwareVersionCheck()
             delay(100);
             httpCode = https.GET();
             delay(100);
+            
+            Serial.print("HTTP Response code: ");
+            Serial.println(httpCode);
+            
             if (httpCode == HTTP_CODE_OK)
             {
                 payload = https.getString();
-                Serial.println("Received version: " + payload);  // Añadir para debug
-                Serial.println("Current version: " + String(Version_firmware));  // Añadir para debug
+                Serial.println("Received version: " + payload);
+                Serial.println("Current version: " + String(Version_firmware));
             }
             else
             {
@@ -89,7 +93,7 @@ int firmwareVersionCheck()
                 Serial.println(httpCode);
                 https.end();
                 delete wificlient;
-                return -1;  // Retornar error en lugar de 0
+                return -1;
             }
             https.end();
         }
@@ -112,7 +116,7 @@ int firmwareVersionCheck()
             return 1;
         }
     }
-    return -1;  // Retornar error en lugar de 0
+    return -1;
 }
 
 // firmwareUpdate()
