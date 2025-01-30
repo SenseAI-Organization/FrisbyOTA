@@ -10,7 +10,7 @@ extern const char *Version_firmware;
  ** ************ DEFINES *******************************************************
  ** ****************************************************************************/
 // URLs to query new firmware version
-#define URL_FW_VER "https://raw.githubusercontent.com/SenseAI-Organization/FrisbyOTA/main/bin_version.txt"
+#define URL_FW_VER "https://raw.githubusercontent.com/SenseAI-Organization/FrisbyOTA/refs/heads/main/bin_version.txt
 #define URL_FW_BIN "https://raw.githubusercontent.com/SenseAI-Organization/FrisbyOTA/main/firmware.bin"
 
 
