@@ -90,13 +90,13 @@ int firmwareVersionCheck()
         payload.trim();
         if (payload.equals(Version_firmware))
         {
-            // Serial.printf("\nDevice already on latest firmware version:%s\n", Version_firmware);
+            Serial.printf("\nDevice already on latest firmware version:%s\n", Version_firmware);
             return 0;
         }
         else
         {
-            // Serial.println(payload);
-            // Serial.println("New firmware detected");
+            Serial.println(payload);
+            Serial.println("New firmware detected");
             return 1;
         }
     }
