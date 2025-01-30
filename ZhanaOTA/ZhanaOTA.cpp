@@ -51,69 +51,56 @@ const char *rootCACertificate = "-----BEGIN CERTIFICATE-----\n"
 // firmwareVersionCheck()
 // @param none: void
 // @return status: int
-int firmwareVersionCheck()
-{
-    String payload;
-    int httpCode;
-    String fwurl = "";
-    fwurl += URL_FW_VER;
-    fwurl += "?";
-    fwurl += String(rand());
-    Serial.println("Checking URL: " + fwurl);
+// Función auxiliar para comparar versiones
+bool isNewerVersion(const char* serverVersion, const char* deviceVersion) {
+    int serverNums[3] = {0};
+    int deviceNums[3] = {0};
     
-    WiFiClientSecure *wificlient = new WiFiClientSecure;
-
-    if (wificlient)
-    {
-        wificlient->setInsecure();  // Prueba con esto en lugar de setCACert
-        HTTPClient https;
-
-        if (https.begin(*wificlient, fwurl))
-        { 
-            Serial.println("[HTTPS] GET...");
-            delay(100);
-            httpCode = https.GET();
-            delay(100);
-            
-            Serial.print("HTTP Response code: ");
-            Serial.println(httpCode);
-            
-            if (httpCode == HTTP_CODE_OK)
-            {
-                payload = https.getString();
-                Serial.println("Received version: " + payload);
-                Serial.println("Current version: " + String(Version_firmware));
-            }
-            else
-            {
-                Serial.print("Error in downloading version file: ");
-                Serial.println(httpCode);
-                https.end();
-                delete wificlient;
-                return -1;
-            }
-            https.end();
-        }
-        delete wificlient;
+    // Parsear versión del servidor
+    sscanf(serverVersion, "%d.%d.%d", &serverNums[0], &serverNums[1], &serverNums[2]);
+    
+    // Parsear versión del dispositivo
+    sscanf(deviceVersion, "%d.%d.%d", &deviceNums[0], &deviceNums[1], &deviceNums[2]);
+    
+    // Comparar versiones
+    for(int i = 0; i < 3; i++) {
+        if(serverNums[i] > deviceNums[i]) return true;
+        if(serverNums[i] < deviceNums[i]) return false;
     }
+    
+    return false; // Si son iguales, no es una versión más nueva
+}
 
-    if (httpCode == HTTP_CODE_OK)
-    {
-        payload.trim();
-        if (payload.equals(Version_firmware))
-        {
-            Serial.printf("\nDevice already on latest firmware version:%s\n", Version_firmware);
-            return 0;
-        }
-        else
-        {
-            Serial.println("Server version: " + payload);
-            Serial.println("Device version: " + String(Version_firmware));
-            Serial.println("New firmware detected");
-            return 1;
-        }
+// Modificar la función firmwareVersionCheck para usar la nueva lógica
+int firmwareVersionCheck() {
+    if (WiFi.status() != WL_CONNECTED) return -1;
+    
+    HTTPClient http;
+    http.begin("https://raw.githubusercontent.com/SenseAI-Organization/FrisbyOTA/main/bin_version.txt");
+    
+    int httpCode = http.GET();
+    if(httpCode != HTTP_CODE_OK) {
+        http.end();
+        return -1;
     }
-    return -1;
+    
+    String newFWVersion = http.getString();
+    http.end();
+    
+    // Limpiar cualquier caracter no deseado
+    newFWVersion.trim();
+    
+    Serial.print("Server version: ");
+    Serial.println(newFWVersion);
+    Serial.print("Device version: ");
+    Serial.println(Version_firmware);
+    
+    // Usar la nueva función de comparación
+    if(isNewerVersion(newFWVersion.c_str(), Version_firmware)) {
+        return 1;
+    }
+    
+    return 0;
 }
 
 // firmwareUpdate()
