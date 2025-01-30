@@ -24,8 +24,8 @@ bool isNewerVersion(const char* serverVersion, const char* deviceVersion);
 
 // firmwareUpdate()
 // @param none: void
-// @return none: void
-void firmwareUpdate();
+// @return bool: bool
+bool firmwareUpdate();
 
 #endif /* SMARTBEDDINGOTA_H */
 

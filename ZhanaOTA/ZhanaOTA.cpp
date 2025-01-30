@@ -106,28 +106,29 @@ int firmwareVersionCheck() {
 // firmwareUpdate()
 // @param none: void
 // @return none: void
-void firmwareUpdate(void)
+bool firmwareUpdate()
 {
     WiFiClientSecure wificlient;
     wificlient.setInsecure();
-    // httpUpdate.setLedPin(LED_BUILTIN, LOW);
-    // Serial.println("Procedding to update firmware. Device will reboot if successful.");
+    
     t_httpUpdate_return ret = httpUpdate.update(wificlient, URL_FW_BIN);
 
     switch (ret)
     {
     case HTTP_UPDATE_FAILED:
-        // Serial.printf("HTTP_UPDATE_FAILED Error (%d): %s\n", httpUpdate.getLastError(), httpUpdate.getLastErrorString().c_str());
-        break;
-
+        Serial.printf("HTTP_UPDATE_FAILED Error (%d): %s\n", httpUpdate.getLastError(), httpUpdate.getLastErrorString().c_str());
+        return false;
+        
     case HTTP_UPDATE_NO_UPDATES:
-        // Serial.println("HTTP_UPDATE_NO_UPDATES");
-        break;
-
+        Serial.println("HTTP_UPDATE_NO_UPDATES");
+        return false;
+        
     case HTTP_UPDATE_OK:
-        // Serial.println("HTTP_UPDATE_OK");
-        break;
+        Serial.println("HTTP_UPDATE_OK");
+        return true;
     }
+    
+    return false; // Por si acaso llegamos aquí
 }
 
 /****** END OF FILE ****/
