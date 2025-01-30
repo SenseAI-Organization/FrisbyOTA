@@ -10,35 +10,43 @@ extern const char *Version_firmware;
  ** ************ DEFINES *******************************************************
  ** ****************************************************************************/
 // URLs to query new firmware version
-#define URL_FW_VER "https://raw.githubusercontent.com/SenseAI-Organization/FrisbyOTA/refs/heads/main/bin_version.txt" // URL WITH FIRMWARE VERSION
-#define URL_FW_BIN "https://github.com/SenseAI-Organization/FrisbyOTA/blob/main/firmware.bin"    // URL WITH BIN
+#define URL_FW_VER "https://raw.githubusercontent.com/SenseAI-Organization/FrisbyOTA/main/bin_version.txt"
+#define URL_FW_BIN "https://raw.githubusercontent.com/SenseAI-Organization/FrisbyOTA/main/firmware.bin"
+
 
 /** ****************************************************************************
  ** ************ VARIABLES *****************************************************
  ** ****************************************************************************/
-const char *rootCACertificate = // Certificado de GitHub; deberá cambiarse por URL elegido
-    "-----BEGIN CERTIFICATE-----\n"
-    "MIIDrzCCApegAwIBAgIQCDvgVpBCRrGhdWrJWZHHSjANBgkqhkiG9w0BAQUFADBh\n"
-    "MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\n"
-    "d3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBD\n"
-    "QTAeFw0wNjExMTAwMDAwMDBaFw0zMTExMTAwMDAwMDBaMGExCzAJBgNVBAYTAlVT\n"
-    "MRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5j\n"
-    "b20xIDAeBgNVBAMTF0RpZ2lDZXJ0IEdsb2JhbCBSb290IENBMIIBIjANBgkqhkiG\n"
-    "9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4jvhEXLeqKTTo1eqUKKPC3eQyaKl7hLOllsB\n"
-    "CSDMAZOnTjC3U/dDxGkAV53ijSLdhwZAAIEJzs4bg7/fzTtxRuLWZscFs3YnFo97\n"
-    "nh6Vfe63SKMI2tavegw5BmV/Sl0fvBf4q77uKNd0f3p4mVmFaG5cIzJLv07A6Fpt\n"
-    "43C/dxC//AH2hdmoRBBYMql1GNXRor5H4idq9Joz+EkIYIvUX7Q6hL+hqkpMfT7P\n"
-    "T19sdl6gSzeRntwi5m3OFBqOasv+zbMUZBfHWymeMr/y7vrTC0LUq7dBMtoM1O/4\n"
-    "gdW7jVg/tRvoSSiicNoxBN33shbyTApOB6jtSj1etX+jkMOvJwIDAQABo2MwYTAO\n"
-    "BgNVHQ8BAf8EBAMCAYYwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUA95QNVbR\n"
-    "TLtm8KPiGxvDl7I90VUwHwYDVR0jBBgwFoAUA95QNVbRTLtm8KPiGxvDl7I90VUw\n"
-    "DQYJKoZIhvcNAQEFBQADggEBAMucN6pIExIK+t1EnE9SsPTfrgT1eXkIoyQY/Esr\n"
-    "hMAtudXH/vTBH1jLuG2cenTnmCmrEbXjcKChzUyImZOMkXDiqw8cvpOp/2PV5Adg\n"
-    "06O/nVsJ8dWO41P0jmP6P6fbtGbfYmbW0W5BjfIttep3Sp+dWOIrWcBAI+0tKIJF\n"
-    "PnlUkiaY4IBIqDfv8NZ5YBberOgOzW6sRBc4L0na4UU+Krk2U886UAb3LujEV0ls\n"
-    "YSEY1QSteDwsOoBrp+uvFRTp2InBuThs4pFsiv9kuXclVzDAGySj4dzp30d8tbQk\n"
-    "CAUw7C29C79Fv1C5qfPrmAESrciIxpg0X40KPMbp1ZWVbd4=\n"
-    "-----END CERTIFICATE-----\n";
+const char *rootCACertificate = 
+"-----BEGIN CERTIFICATE-----\n"
+"MIIEvjCCA6agAwIBAgIQBtjZBNVYQ0b2ii+nVCJ+xDANBgkqhkiG9w0BAQsFADBh\n"
+"MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\n"
+"d3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBH\n"
+"MjAeFw0yMTA0MTQwMDAwMDBaFw0zMTA0MTMyMzU5NTlaME8xCzAJBgNVBAYTAlVT\n"
+"MRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxKTAnBgNVBAMTIERpZ2lDZXJ0IFRMUyBS\n"
+"U0EgU0hBMjU2IDIwMjAgQ0ExMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC\n"
+"AQEAwUuzZUdwvN1PWNvsnO3DZuUfMRNUrUpmRh8sCuxkB+Uu3Ny5CiDt3+PE0J6a\n"
+"qXodgojlEVbbHp9YwlHnLDQNLtKS4VbL8Xlfs7uHyiUDe5pSQWYQYE9XE0nw6Ddn\n"
+"g9/n00tnTCJRpt8OmRDtV1F0JuJ9x8piLhMbfyOIJVNvwTRYAIuE//i+p1hJInuW\n"
+"raKImxW8oHzf6VGo1bDtN+I2tIJLYrVJmuzHZ9bjPvXj1hJeRPG/cUJ9WIQDgLGB\n"
+"Afr5yjK7tI4nhyfFK3TUqNaX3sNk+crOU6JWvHgXjkkDKa77SU+kFbnO8lwZV21r\n"
+"eacroicgE7XQPUDTITAHk+qZ9QIDAQABo4IBgjCCAX4wEgYDVR0TAQH/BAgwBgEB\n"
+"/wIBADAdBgNVHQ4EFgQUt2ui6qiqhIx56rTaD5iyxZV2ufQwHwYDVR0jBBgwFoAU\n"
+"TiJUIBiV5uNu5g/6+rkS7QYXjzkwDgYDVR0PAQH/BAQDAgGGMB0GA1UdJQQWMBQG\n"
+"CCsGAQUFBwMBBggrBgEFBQcDAjB2BggrBgEFBQcBAQRqMGgwJAYIKwYBBQUHMAGG\n"
+"GGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0aHR0cDovL2Nh\n"
+"Y2VydHMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0R2xvYmFsUm9vdEcyLmNydDB6BgNV\n"
+"HR8EczBxMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vRGlnaUNlcnRH\n"
+"bG9iYWxSb290RzIuY3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20v\n"
+"RGlnaUNlcnRHbG9iYWxSb290RzIuY3JsMDAGA1UdIAQpMCcwBwYFZ4EMAQEwCAYG\n"
+"Z4EMAQIBMAgGBmeBDAECAjAIBgZngQwBAgMwDQYJKoZIhvcNAQELBQADggEBAHer\n"
+"t3onPa679n/gWlbJhKrKW3EX3SJH/E6f7tDBpATho+vFScH90cnfjK+URSxGKqNj\n"
+"OSD5nkoklEHIqdninFQFBstcHL4AGw+oWv8Zu2XHFq8hVt1hBcnpj5h232sb0HIM\n"
+"ULkwKXq/YFkQZhM6LawVEWwtIwwCPgU7/uWhnOKK24fXSuhe50gG66sSmvKvhMNb\n"
+"g0qZgYOrAKHKCjxMoiWJKiKnpPMzTFuMLhoClw+dj20tlQj7T9rxkTgl4ZxuYRiH\n"
+"as6xuwAwapu3r9rxxZf+ingkquqTgLozZXq8oXfpf2kUCwA/d5KxTVtzhwoT0JzI\n"
+"8ks5T1KESaZMkE4f97Q=\n"
+"-----END CERTIFICATE-----\n";
 
 /* ***************************************************************************
  * **** FUNCTIONS ************************************************************
@@ -54,38 +62,41 @@ int firmwareVersionCheck()
     fwurl += URL_FW_VER;
     fwurl += "?";
     fwurl += String(rand());
-    // Serial.println(fwurl);
+    Serial.println("Checking URL: " + fwurl);  // Añadir para debug
+    
     WiFiClientSecure *wificlient = new WiFiClientSecure;
 
     if (wificlient)
     {
         wificlient->setCACert(rootCACertificate);
-
-        // Add a scoping block for HTTPClient https to make sure it is destroyed before WiFiClientSecure *client is
         HTTPClient https;
 
         if (https.begin(*wificlient, fwurl))
-        { // HTTPS
-            // Serial.print("[HTTPS] GET...\n");
-            //  start connection and send HTTP header
+        { 
+            Serial.println("[HTTPS] GET...");
             delay(100);
             httpCode = https.GET();
             delay(100);
-            if (httpCode == HTTP_CODE_OK) // if version received
+            if (httpCode == HTTP_CODE_OK)
             {
-                payload = https.getString(); // save received version
+                payload = https.getString();
+                Serial.println("Received version: " + payload);  // Añadir para debug
+                Serial.println("Current version: " + String(Version_firmware));  // Añadir para debug
             }
             else
             {
-                // Serial.print("error in downloading version file:");
-                // Serial.println(httpCode);
+                Serial.print("Error in downloading version file: ");
+                Serial.println(httpCode);
+                https.end();
+                delete wificlient;
+                return -1;  // Retornar error en lugar de 0
             }
             https.end();
         }
         delete wificlient;
     }
 
-    if (httpCode == HTTP_CODE_OK) // if version received
+    if (httpCode == HTTP_CODE_OK)
     {
         payload.trim();
         if (payload.equals(Version_firmware))
@@ -95,12 +106,13 @@ int firmwareVersionCheck()
         }
         else
         {
-            Serial.println(payload);
+            Serial.println("Server version: " + payload);
+            Serial.println("Device version: " + String(Version_firmware));
             Serial.println("New firmware detected");
             return 1;
         }
     }
-    return 0;
+    return -1;  // Retornar error en lugar de 0
 }
 
 // firmwareUpdate()
